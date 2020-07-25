@@ -121,4 +121,9 @@ defmodule ClubBackend.Accounts do
       _ -> {:error, :unknown}
     end
   end
+
+  def register(username, password) do
+    %{username: username, password: password}
+    |> create_user()
+  end
 end

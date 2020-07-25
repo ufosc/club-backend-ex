@@ -9,6 +9,7 @@ defmodule ClubBackendWeb.Router do
     pipe_through :api
 
     post "/auth/login", AuthController, :login
+    post "/auth/register", AuthController, :register
   end
 
   # Enables LiveDashboard only for development

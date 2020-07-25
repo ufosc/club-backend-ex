@@ -18,6 +18,7 @@ defmodule ClubBackend.Accounts.User do
     user
     |> cast(attrs, [:username, :password, :email])
     |> validate_required([:username, :password])
+    |> unique_constraint(:username)
     |> put_hash()
   end
 
