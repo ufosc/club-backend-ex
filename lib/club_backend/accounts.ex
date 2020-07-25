@@ -101,4 +101,24 @@ defmodule ClubBackend.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  def get_user_by_username(username) do
+    IO.puts("username: " <> username)
+    Repo.get_by!(User, username: username)
+  end
+
+  def verify_password?(%User{} = user, password) do
+    Argon2.verify_pass(password, user.password_hash)
+  end
+
+  def login(username, password) do
+    with user <- get_user_by_username(username),
+         true <- verify_password?(user, password) do
+      {:ok, user}
+    else
+      false -> {:error, :invalid_username_or_pass}
+      {:error, _changeset} -> {:error, :invalid_username_or_pass}
+      _ -> {:error, :unknown}
+    end
+  end
 end

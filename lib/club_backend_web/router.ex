@@ -7,6 +7,8 @@ defmodule ClubBackendWeb.Router do
 
   scope "/api", ClubBackendWeb do
     pipe_through :api
+
+    post "/auth/login", AuthController, :login
   end
 
   # Enables LiveDashboard only for development
