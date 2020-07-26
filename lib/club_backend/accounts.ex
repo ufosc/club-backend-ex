@@ -113,8 +113,9 @@ defmodule ClubBackend.Accounts do
 
   def login(username, password) do
     with user <- get_user_by_username(username),
-         true <- verify_password?(user, password) do
-      {:ok, user}
+         true <- verify_password?(user, password),
+         {:ok, token, _claims} <- ClubBackend.Guardian.encode_and_sign(user) do
+      {:ok, token}
     else
       false -> {:error, :invalid_username_or_pass}
       {:error, _changeset} -> {:error, :invalid_username_or_pass}
@@ -123,7 +124,11 @@ defmodule ClubBackend.Accounts do
   end
 
   def register(username, password) do
-    %{username: username, password: password}
-    |> create_user()
+    with {:ok, user} <- create_user(%{username: username, password: password}),
+         {:ok, token, _claims} <- ClubBackend.Guardian.encode_and_sign(user) do
+      {:ok, token}
+    else
+      {:error, m} -> {:error, m}
+    end
   end
 end

@@ -1,19 +1,19 @@
 defmodule ClubBackendWeb.AuthView do
   use ClubBackendWeb, :view
 
-  def render("login.json", %{user: user} = _params) do
-    %{username: user.username}
+  def render("login.json", %{token: token} = _params) do
+    %{token: token}
   end
 
   def render("login.error.json", _) do
     %{message: "Unknown username or password."}
   end
 
-  def render("register.json", %{user: _user}) do
-    %{message: "Registration success"}
+  def render("register.json", %{token: token}) do
+    %{token: token}
   end
 
-  def render("registration.error.json", %{changeset: changeset}) do
+  def render("registration.error.json", %{changeset: %Ecto.Changeset{} = changeset}) do
     %{
       errors:
         Enum.map(
@@ -24,5 +24,9 @@ defmodule ClubBackendWeb.AuthView do
           end
         )
     }
+  end
+
+  def render("registration.error.json", _) do
+    %{errors: [message: "unknown error occurred during registration"]}
   end
 end

@@ -5,6 +5,8 @@ defmodule ClubBackendWeb.Router do
     plug :accepts, ["json"]
   end
 
+  get "/ping", ClubBackendWeb.PingController, :ping
+
   scope "/api", ClubBackendWeb do
     pipe_through :api
 

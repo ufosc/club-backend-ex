@@ -5,7 +5,7 @@ defmodule ClubBackendWeb.AuthController do
 
   def login(conn, %{"username" => username, "password" => password} = _params) do
     case Accounts.login(username, password) do
-      {:ok, user} -> render(conn, "login.json", %{user: user})
+      {:ok, token} -> render(conn, "login.json", %{token: token})
       {:error, _} -> conn |> put_status(400) |> render("login.error.json", %{})
     end
   end
@@ -18,8 +18,8 @@ defmodule ClubBackendWeb.AuthController do
 
   def register(conn, %{"username" => username, "password" => password} = _params) do
     case Accounts.register(username, password) do
-      {:ok, user} ->
-        render(conn, "register.json", %{user: user})
+      {:ok, token} ->
+        render(conn, "register.json", %{token: token})
 
       {:error, changeset} ->
         conn |> put_status(400) |> render("registration.error.json", %{changeset: changeset})
