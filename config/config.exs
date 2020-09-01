@@ -28,8 +28,8 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 config :club_backend, ClubBackend.Guardian,
-       issuer: "club_backend",
-       secret_key: "NWR7fU0ul5tv9p81Y2gOCXAiyVZ3Xu4+hK4C1K6TCy+w3LngISV+VL+x7e4LCTgT"
+  issuer: "club_backend",
+  secret_key: "NWR7fU0ul5tv9p81Y2gOCXAiyVZ3Xu4+hK4C1K6TCy+w3LngISV+VL+x7e4LCTgT"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

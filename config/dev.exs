@@ -2,10 +2,11 @@ use Mix.Config
 
 # Configure your database
 config :club_backend, ClubBackend.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("PGUSER", "postgres"),
+  password: System.get_env("PGPASSWORD", "postgres"),
   database: "club_backend_dev",
-  hostname: "localhost",
+  hostname: System.get_env("PGHOST", "localhost"),
+  port: System.get_env("PGPORT", "5432") |> String.to_integer,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
