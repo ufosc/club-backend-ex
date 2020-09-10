@@ -10,7 +10,7 @@ config :club_backend, ClubBackend.Repo,
   password: System.get_env("PGPASSWORD", "postgres"),
   database: "club_backend_test#{System.get_env("MIX_TEST_PARTITION")}",
   hostname: System.get_env("PGHOST", "localhost"),
-  port: System.get_env("PGPORT", "5432") |> String.to_integer,
+  port: System.get_env("PGPORT", "5432") |> String.to_integer(),
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,

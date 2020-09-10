@@ -6,7 +6,7 @@ config :club_backend, ClubBackend.Repo,
   password: System.get_env("PGPASSWORD", "postgres"),
   database: "club_backend_dev",
   hostname: System.get_env("PGHOST", "localhost"),
-  port: System.get_env("PGPORT", "5432") |> String.to_integer,
+  port: System.get_env("PGPORT", "5432") |> String.to_integer(),
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
