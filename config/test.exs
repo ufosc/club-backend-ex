@@ -21,3 +21,8 @@ config :club_backend, ClubBackendWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+config :cors_plug,
+  origin: ["*"],
+  max_age: 86_400,
+  methods: ["GET", "POST"]

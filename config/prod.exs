@@ -53,3 +53,8 @@ config :logger, level: :info
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
 import_config "prod.secret.exs"
+
+config :cors_plug,
+  origin: ["https://ufopensource.club"],
+  max_age: 86_400,
+  methods: ["GET", "POST"]

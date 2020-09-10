@@ -104,7 +104,11 @@ defmodule ClubBackend.Accounts do
 
   def get_user_by_username(username) do
     IO.puts("username: " <> username)
-    Repo.get_by!(User, username: username)
+
+    case Repo.get_by(User, username: username) do
+      nil -> {:error, :no_user_by_username}
+      user -> {:ok, user}
+    end
   end
 
   def verify_password?(%User{} = user, password) do
@@ -112,7 +116,7 @@ defmodule ClubBackend.Accounts do
   end
 
   def login(username, password) do
-    with user <- get_user_by_username(username),
+    with {:ok, user} <- get_user_by_username(username),
          true <- verify_password?(user, password),
          {:ok, token, _claims} <- ClubBackend.Guardian.encode_and_sign(user) do
       {:ok, token}

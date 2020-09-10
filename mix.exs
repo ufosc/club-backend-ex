@@ -46,7 +46,8 @@ defmodule ClubBackend.MixProject do
       {:argon2_elixir, "~> 2.0"},
       {:guardian, "~> 2.0"},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:cors_plug, "~> 2.0"}
     ]
   end
 
