@@ -13,7 +13,11 @@ database_url =
 
 config :club_backend, ClubBackend.Repo,
   # ssl: true,
-  url: database_url,
+  username: System.get_env("DBUSER", "postgres"),
+  password: System.get_env("DBPASSWORD", "postgres"),
+  database: "club_backend_prod",
+  hostname: System.get_env("DBHOST", "localhost"),
+  port: System.get_env("DBPORT", "5432") |> String.to_integer(),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
 secret_key_base =
