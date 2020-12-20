@@ -8,7 +8,7 @@ ENV MIX_ENV=prod
 
 WORKDIR /app
 
-COPY /backend/ /app/
+COPY . /app/
 RUN mix deps.get && mix deps.compile && mix compile
 
 RUN mix release
