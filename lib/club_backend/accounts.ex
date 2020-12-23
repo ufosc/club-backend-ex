@@ -103,8 +103,6 @@ defmodule ClubBackend.Accounts do
   end
 
   def get_user_by_username(username) do
-    IO.puts("username: " <> username)
-
     case Repo.get_by(User, username: username) do
       nil -> {:error, :no_user_by_username}
       user -> {:ok, user}

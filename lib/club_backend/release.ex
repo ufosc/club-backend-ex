@@ -1,5 +1,4 @@
 defmodule ClubBackend.Release do
-
   @app :club_backend
 
   def migrate do
@@ -22,5 +21,4 @@ defmodule ClubBackend.Release do
   defp load_app do
     Application.load(@app)
   end
-
 end

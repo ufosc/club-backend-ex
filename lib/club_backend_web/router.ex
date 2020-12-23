@@ -12,6 +12,8 @@ defmodule ClubBackendWeb.Router do
 
     post "/auth/login", AuthController, :login
     post "/auth/register", AuthController, :register
+
+    resources "/events", EventController
   end
 
   # Enables LiveDashboard only for development
