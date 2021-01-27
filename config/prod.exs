@@ -55,6 +55,6 @@ config :logger, level: :info
 # import_config "prod.secret.exs"
 
 config :cors_plug,
-  origin: ["https://ufopensource.club"],
+  origin: ["https://ufopensource.club", "https://admin.ufopensource.club"],
   max_age: 86_400,
   methods: ["GET", "POST"]
