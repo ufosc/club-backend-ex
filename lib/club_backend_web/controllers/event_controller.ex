@@ -4,6 +4,12 @@ defmodule ClubBackendWeb.EventController do
   alias ClubBackend.Events
   alias ClubBackend.Events.Event
 
+  @restricted_actions [:create, :update, :delete]
+
+  # Restrict the routes for modifying events to only authenticated officers
+  plug ClubBackend.Accounts.AuthPipeline when action in @restricted_actions
+  plug ClubBackend.Accounts.OfficerPlug when action in @restricted_actions
+
   action_fallback ClubBackendWeb.FallbackController
 
   def index(conn, _params) do

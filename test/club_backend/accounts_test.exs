@@ -8,13 +8,19 @@ defmodule ClubBackend.AccountsTest do
   describe "users" do
     alias ClubBackend.Accounts.User
 
-    @valid_attrs %{email: "some email", password: "some password", username: "some username"}
+    @valid_attrs %{
+      email: "some email",
+      password: "some password",
+      username: "some username",
+      is_officer: false
+    }
     @update_attrs %{
       email: "some updated email",
       password: "some updated password",
-      username: "some updated username"
+      username: "some updated username",
+      is_officer: false
     }
-    @invalid_attrs %{email: nil, password: nil, username: nil}
+    @invalid_attrs %{email: nil, password: nil, username: nil, is_officer: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =

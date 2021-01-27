@@ -14,3 +14,10 @@ ClubBackend.Accounts.create_user(%{
   username: "test",
   password: "test"
 })
+
+ClubBackend.Accounts.create_user(%{
+  email: "admin@ufopensource.club",
+  username: "admin",
+  password: "admin",
+  is_officer: true
+})
