@@ -1,5 +1,6 @@
 defmodule ClubBackendWeb.EventControllerTest do
   use ClubBackendWeb.ConnCase
+  import ClubBackend.Guardian
 
   alias ClubBackend.Events
   alias ClubBackend.Events.Event
@@ -46,14 +47,28 @@ defmodule ClubBackendWeb.EventControllerTest do
   end
 
   describe "create event" do
+    test "create event requires auth", %{conn: conn} do
+      conn = post(conn, Routes.event_path(conn, :create), event: @create_attrs)
+      assert %{"error" => "unauthenticated"} = json_response(conn, 401)
+    end
+
+    test "create event requires admin authentication", %{conn: conn} do
+      conn = insert(:user) |> get_auth_token |> add_token_to_conn(conn)
+
+      conn = post(conn, Routes.event_path(conn, :create), event: @create_attrs)
+      assert %{"error" => "forbidden"} = json_response(conn, 403)
+    end
+
     test "renders event when data is valid", %{conn: conn} do
+      conn = build(:user) |> make_admin |> insert |> get_auth_token |> add_token_to_conn(conn)
+
       conn = post(conn, Routes.event_path(conn, :create), event: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.event_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "category" => "some category",
                "description" => "some description",
                "end_dt" => "2010-04-17T14:00:00Z",
@@ -64,6 +79,7 @@ defmodule ClubBackendWeb.EventControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
+      conn = build(:user) |> make_admin |> insert |> get_auth_token |> add_token_to_conn(conn)
       conn = post(conn, Routes.event_path(conn, :create), event: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
@@ -72,14 +88,27 @@ defmodule ClubBackendWeb.EventControllerTest do
   describe "update event" do
     setup [:create_event]
 
+    test "update event requires auth", %{conn: conn, event: %Event{id: _id} = event} do
+      conn = put(conn, Routes.event_path(conn, :update, event), event: @update_attrs)
+      assert %{"error" => "unauthenticated"} = json_response(conn, 401)
+    end
+
+    test "update event requires admin authentication", %{conn: conn, event: %Event{id: _id} = event} do
+      conn = insert(:user) |> get_auth_token |> add_token_to_conn(conn)
+
+      conn = put(conn, Routes.event_path(conn, :update, event), event: @update_attrs)
+      assert %{"error" => "forbidden"} = json_response(conn, 403)
+    end
+
     test "renders event when data is valid", %{conn: conn, event: %Event{id: id} = event} do
+      conn = build(:user) |> make_admin |> insert |> get_auth_token |> add_token_to_conn(conn)
       conn = put(conn, Routes.event_path(conn, :update, event), event: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
       conn = get(conn, Routes.event_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "category" => "some updated category",
                "description" => "some updated description",
                "end_dt" => "2011-05-18T15:01:01Z",
@@ -90,6 +119,8 @@ defmodule ClubBackendWeb.EventControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, event: event} do
+      conn = build(:user) |> make_admin |> insert |> get_auth_token |> add_token_to_conn(conn)
+
       conn = put(conn, Routes.event_path(conn, :update, event), event: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
@@ -98,7 +129,20 @@ defmodule ClubBackendWeb.EventControllerTest do
   describe "delete event" do
     setup [:create_event]
 
+    test "delete event requires auth", %{conn: conn, event: event} do
+      conn = delete(conn, Routes.event_path(conn, :delete, event))
+      assert %{"error" => "unauthenticated"} = json_response(conn, 401)
+    end
+
+    test "delete event requires admin authentication", %{conn: conn, event: event} do
+      conn = insert(:user) |> get_auth_token |> add_token_to_conn(conn)
+
+      conn = delete(conn, Routes.event_path(conn, :delete, event))
+      assert %{"error" => "forbidden"} = json_response(conn, 403)
+    end
+
     test "deletes chosen event", %{conn: conn, event: event} do
+      conn = build(:user) |> make_admin |> insert |> get_auth_token |> add_token_to_conn(conn)
       conn = delete(conn, Routes.event_path(conn, :delete, event))
       assert response(conn, 204)
 
