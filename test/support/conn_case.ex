@@ -23,6 +23,18 @@ defmodule ClubBackendWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import ClubBackendWeb.ConnCase
+      import ClubBackend.Factory
+      import ClubBackend.Guardian
+
+      def get_auth_token(user) do
+        {:ok, token, _claims} = encode_and_sign(user, %{}, auth_time: true)
+        token
+      end
+
+      def add_token_to_conn(token, conn) do
+        conn
+          |> put_req_header("authorization", "Bearer " <> token)
+      end
 
       alias ClubBackendWeb.Router.Helpers, as: Routes
 

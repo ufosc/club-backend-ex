@@ -10,7 +10,8 @@ defmodule ClubBackend.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      dialyzer: [plt_add_deps: :app_tree]
     ]
   end
 
@@ -48,7 +49,9 @@ defmodule ClubBackend.MixProject do
       {:guardian, "~> 2.0"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:cors_plug, "~> 2.0"}
+      {:cors_plug, "~> 2.0"},
+      {:ex_machina, "~> 2.5.0", only: :test},
+      {:tz, "~> 0.12.0"}
     ]
   end
 

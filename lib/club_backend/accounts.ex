@@ -113,10 +113,12 @@ defmodule ClubBackend.Accounts do
     Argon2.verify_pass(password, user.password_hash)
   end
 
+  @spec login(String.t(), String.t()) ::
+          {:error, :invalid_username_or_pass} | {:ok, binary} | {:error, :unknown}
   def login(username, password) do
     with {:ok, user} <- get_user_by_username(username),
          true <- verify_password?(user, password),
-         {:ok, token, _claims} <- ClubBackend.Guardian.encode_and_sign(user) do
+         {:ok, token, _claims} <- ClubBackend.Guardian.encode_and_sign(user, %{}, auth_time: true) do
       {:ok, token}
     else
       false -> {:error, :invalid_username_or_pass}
@@ -127,7 +129,7 @@ defmodule ClubBackend.Accounts do
 
   def register(username, password) do
     with {:ok, user} <- create_user(%{username: username, password: password}),
-         {:ok, token, _claims} <- ClubBackend.Guardian.encode_and_sign(user) do
+         {:ok, token, _claims} <- ClubBackend.Guardian.encode_and_sign(user, %{}, auth_time: true) do
       {:ok, token}
     else
       {:error, m} -> {:error, m}

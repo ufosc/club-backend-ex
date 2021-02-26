@@ -9,6 +9,7 @@ defmodule ClubBackend.Accounts.User do
     field :password_hash, :string
     field :username, :string
     field :password, :string, virtual: true
+    field :is_officer, :boolean
 
     timestamps()
   end
@@ -16,7 +17,7 @@ defmodule ClubBackend.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :password, :email])
+    |> cast(attrs, [:username, :password, :email, :is_officer])
     |> validate_required([:username, :password])
     |> unique_constraint(:username)
     |> put_hash()
